@@ -2,15 +2,21 @@ import {Log} from '../../../logging-middleware/index.js';
 const notifications = [
   {
     id: 1,
-    title: "Assignment Deadline",
-    message: "Submit your campus hiring task before the deadline.",
+    title: "Placement Drive",
+    message: "Campus placement registration is open now.",
     type: "unread",
   },
   {
     id: 2,
-    title: "Interview Update",
-    message: "Your technical interview slot has been scheduled.",
+    title: "Result Published",
+    message: "Your aptitude test result has been published.",
     type: "read",
+  },
+  {
+    id: 3,
+    title: "Interview Schedule",
+    message: "Your technical interview is scheduled for tomorrow.",
+    type: "unread",
   },
 ];
 export async function fetchNotifications(filter="all",page=1) {

@@ -5,7 +5,7 @@ export function NotificationCard({ notification }) {
     <Card variant="outlined">
       <CardContent>
         <Stack spacing={1}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Stack sx={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 1 }}>
             <Typography fontWeight={700}>
               {notification.title}
             </Typography>
