@@ -1,39 +1,36 @@
 import { useState } from "react";
-import {
-  Alert,
-  Badge,
-  Box,
-  CircularProgress,
-  Divider,
-  Pagination,
-  Stack,
-  Typography,
-} from "@mui/material";
+
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
-import { NotificationCard } from "../components/NotificationCard";
+// import { NotificationCard } from "../components/NotificationCard";
 import { NotificationFilter } from "../components/NotificationFilter";
 import { useNotifications } from "../hooks/useNotifications";
+import {
+  Alert,Badge,Box,CircularProgress,Divider,Pagination,Stack,Typography,Card,CardContent,} from "@mui/material";
+import { Log } from "../../../logging-middleware/index.js";
 
-export function NotificationsPage() {
+  export function NotificationsPage() {
   const [filter, setFilter] = useState();
   const [page, setPage] = useState("1");
 
-  const { notifications, totalPages, loading, error } = useNotifications();
+  const { notifications, totalPages, loading, error } = useNotifications(filter,page);
 
-  const unreadCount = 2;
+  const unreadCount = notifications.filter((item) => item.type === "unread").length;
 
-  const handleFilterChange = (newFilter) => {
-
+  const handleFilterChange = async (newFilter) => {
+    setFilter(newFilter);
+    setPage(1);
+    await Log("frontend", "info", "page", `Filter changed to ${newFilter}`);
   };
 
-  const handlePageChange = (_, newPage) => {
-
+  const handlePageChange = async (_, newPage) => {
+    setPage(newPage);
+    await Log("frontend", "info", "page", `Page changed to ${newPage}`);
   };
 
   return (
     <Box sx={{ maxWidth: 720, mx: "auto", px: 2, py: 4 }}>
-      <Stack direction="row" alignItems="center" spacing={1.5} mb={3}>
+      <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1.5, mb: 3 }}>
         <Badge badgeContent={unreadCount} color="primary" max={99}>
           <NotificationsIcon sx={{ fontSize: 28 }} />
         </Badge>
@@ -49,7 +46,7 @@ export function NotificationsPage() {
       </Box>
 
       {true && (
-        <Box display="flex" justifyContent="center" py={6}>
+        <Box sx={{ display: "flex", justifyContent: "center", py: 6 }}>
           <CircularProgress />
         </Box>
       )}
@@ -66,6 +63,18 @@ export function NotificationsPage() {
         <Stack spacing={1.5}>
           {notifications.map((n) => (
             <></>
+          ))}
+        </Stack>
+      )}
+       {!loading && !error && notifications.length > 0 && (
+        <Stack spacing={1.5}>
+          {notifications.map((notification) => (
+            <Card key={notification.id} variant="outlined">
+              <CardContent>
+                <Typography fontWeight={700}>{notification.title}</Typography>
+                <Typography color="text.secondary">{notification.message}</Typography>
+              </CardContent>
+            </Card>
           ))}
         </Stack>
       )}

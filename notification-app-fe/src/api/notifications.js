@@ -5,7 +5,7 @@ const notification =[
     {id:3,title: "Notification service",message:"Notification service is running",type:"unread",}
 
 ];
-export function fetchNotifications(filter="all",page=1) {
+export async function fetchNotifications(filter="all",page=1) {
     await Log("frontend","info","api",`fetch notification ${page}`);
 
     try{
