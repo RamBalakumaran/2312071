@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
-// import { NotificationCard } from "../components/NotificationCard";
+import { NotificationCard } from "../components/NotificationCard";
 import { NotificationFilter } from "../components/NotificationFilter";
 import { useNotifications } from "../hooks/useNotifications";
 import {
@@ -10,7 +10,7 @@ import {
 import { Log } from "../../../logging-middleware/index.js";
 
   export function NotificationsPage() {
-  const [filter, setFilter] = useState();
+  const [filter, setFilter] = useState("all");
   const [page, setPage] = useState("1");
 
   const { notifications, totalPages, loading, error } = useNotifications(filter,page);
@@ -45,42 +45,34 @@ import { Log } from "../../../logging-middleware/index.js";
         <NotificationFilter value={filter} onChange={handleFilterChange} />
       </Box>
 
-      {true && (
-        <Box sx={{ display: "flex", justifyContent: "center", py: 6 }}>
-          <CircularProgress />
-        </Box>
-      )}
+{loading && (
+  <Box sx={{ display: "flex", justifyContent: "center", py: 6 }}>
+    <CircularProgress />
+  </Box>
+)}
 
       {!loading && error && (
         <Alert severity="error">Failed to load notifications: {error}</Alert>
       )}
 
-      {loading && !error && notifications.length == "0" && (
-        <Alert severity="info">Something message</Alert>
+      {!loading && !error && notifications.length === 0 && (
+       <Alert severity="info">No notifications found</Alert>
       )}
 
-      {loading && !error && notifications.length > 0 && (
-        <Stack spacing={1.5}>
-          {notifications.map((n) => (
-            <></>
-          ))}
-        </Stack>
-      )}
-       {!loading && !error && notifications.length > 0 && (
-        <Stack spacing={1.5}>
-          {notifications.map((notification) => (
-            <Card key={notification.id} variant="outlined">
-              <CardContent>
-                <Typography fontWeight={700}>{notification.title}</Typography>
-                <Typography color="text.secondary">{notification.message}</Typography>
-              </CardContent>
-            </Card>
-          ))}
-        </Stack>
-      )}
+      {!loading && !error && notifications.length > 0 && (
+  <Stack spacing={1.5}>
+    {notifications.map((notification) => (
+      <NotificationCard
+        key={notification.id}
+        notification={notification}
+      />
+    ))}
+  </Stack>
+)}
+       
 
       {!loading && (
-        <Box display="flex" justifyContent="center" mt={4}>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
           <Pagination
             count={totalPages}
             page={page}

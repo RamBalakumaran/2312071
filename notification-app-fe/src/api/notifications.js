@@ -1,9 +1,17 @@
 import {Log} from '../../../logging-middleware/index.js';
-const notification =[
-    {id:1,title: "Assignment Deadline",message:"submit your task within deadline",type:"uread",},
-    {id:2,title: "Interview Update",message:"interview time scheduled",type:"read",},
-    {id:3,title: "Notification service",message:"Notification service is running",type:"unread",}
-
+const notifications = [
+  {
+    id: 1,
+    title: "Assignment Deadline",
+    message: "Submit your campus hiring task before the deadline.",
+    type: "unread",
+  },
+  {
+    id: 2,
+    title: "Interview Update",
+    message: "Your technical interview slot has been scheduled.",
+    type: "read",
+  },
 ];
 export async function fetchNotifications(filter="all",page=1) {
     await Log("frontend","info","api",`fetch notification ${page}`);
@@ -26,3 +34,6 @@ export async function fetchNotifications(filter="all",page=1) {
     }
 
     }
+
+    //here in this file read / unread type but it is checking filter for placement ,result ,evenet i caN be reason why it is not showing list in web 
+
